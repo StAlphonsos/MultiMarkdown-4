@@ -112,8 +112,12 @@ void print_html_node(GString *out, node *n, scratch_pad *scratch) {
 				scratch->footnote_para_counter --;
 				if (scratch->footnote_para_counter == 0) {
 					if (scratch->extensions & EXT_RANDOM_FOOT) {
+#ifdef HAVE_ARC4RANDOM
+						random = arc4random_uniform(99999) + 1;
+#else
 						srand(scratch->random_seed_base + scratch->footnote_to_print);
 						random = rand() % 99999 + 1;
+#endif
 					} else {
 						random = scratch->footnote_to_print;
 					}
@@ -574,8 +578,12 @@ void print_html_node(GString *out, node *n, scratch_pad *scratch) {
 			temp_node = node_for_count(scratch->used_notes, lev);
 			
 			if (scratch->extensions & EXT_RANDOM_FOOT) {
+#ifdef HAVE_ARC4RANDOM
+				random = arc4random_uniform(99999) + 1;
+#else
 				srand(scratch->random_seed_base + lev);
 				random = rand() % 99999 + 1;
+#endif
 			} else {
 				random = lev;
 			}
@@ -628,8 +636,12 @@ void print_html_node(GString *out, node *n, scratch_pad *scratch) {
 					fprintf(stderr, "matching cite found - %d\n",lev);
 #endif
 					if (scratch->extensions & EXT_RANDOM_FOOT) {
+#ifdef HAVE_ARC4RANDOM
+						random = arc4random_uniform(99999) + 1;
+#else
 						srand(scratch->random_seed_base + lev);
 						random = rand() % 99999 + 1;
+#endif
 					} else {
 						random = lev;
 					}
@@ -901,8 +913,12 @@ void print_html_endnotes(GString *out, scratch_pad *scratch) {
 		pad(out, 1, scratch);
 		
 		if (scratch->extensions & EXT_RANDOM_FOOT) {
+#ifdef HAVE_ARC4RANDOM
+			random = arc4random_uniform(99999) + 1;
+#else
 			srand(scratch->random_seed_base + counter);
 			random = rand() % 99999 + 1;
+#endif
 		} else {
 			random = counter;
 		}
